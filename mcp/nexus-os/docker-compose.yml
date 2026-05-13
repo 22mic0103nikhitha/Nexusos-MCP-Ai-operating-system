@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_URL=http://host.docker.internal:11434/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Required to access host's local Ollama
+    volumes:
+      - .:/workspace # Gives MCP access to the local project files
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
